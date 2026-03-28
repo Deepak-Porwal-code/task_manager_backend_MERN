@@ -19,6 +19,24 @@ app.use(cors({ origin: config.corsOrigin }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Task Manager API',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth/*',
+      projects: '/api/projects',
+      tasks: '/api/tasks',
+      users: '/api/users',
+      seed: '/api/seed'
+    },
+    documentation: 'https://github.com/Deepak-Porwal-code/task_manager_backend_MERN'
+  });
+});
+
 // Routes
 app.use('/api/health', healthRoutes);
 app.use('/api/seed', seedRoutes);
