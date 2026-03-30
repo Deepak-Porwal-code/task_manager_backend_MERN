@@ -20,12 +20,15 @@ const allowedOrigins = (config.corsOrigin || '')
   .map(o => o.trim())
   .filter(Boolean);
 
+const useWildcard = allowedOrigins.includes('*');
+
 app.use(cors({
-  origin: allowedOrigins.length ? allowedOrigins : true,
+  origin: useWildcard ? true : (allowedOrigins.length ? allowedOrigins : true),
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200
 }));
+app.options('*', cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
