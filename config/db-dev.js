@@ -9,6 +9,10 @@ const connectDB = async () => {
     const useMemoryDB = process.env.USE_MEMORY_DB === 'true';
     
     let uri = process.env.MONGODB_URI;
+    if (!uri && !useMemoryDB) {
+      console.error('❌ MONGODB_URI is not set. Please configure the environment variable.');
+      throw new Error('MONGODB_URI missing');
+    }
     
     if (useMemoryDB) {
       console.log('🔄 Starting in-memory MongoDB...');
@@ -24,6 +28,7 @@ const connectDB = async () => {
     
     return mongoServer;
   } catch (error) {
+    console.error(`❌ MongoDB connection error: ${error.name}: ${error.message}`);
     // If connection fails, try in-memory as fallback
     if (!mongoServer && process.env.NODE_ENV === 'development') {
       console.log('⚠️  MongoDB connection failed, using in-memory database...');
