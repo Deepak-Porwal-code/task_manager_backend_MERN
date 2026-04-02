@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import config from './config.js';
 
 let mongoServer;
 
@@ -8,7 +9,7 @@ const connectDB = async () => {
     // Check if we should use in-memory MongoDB
     const useMemoryDB = process.env.USE_MEMORY_DB === 'true';
     
-    let uri = process.env.MONGODB_URI;
+    let uri = config.mongodbUri;
     if (!uri && !useMemoryDB) {
       console.error('❌ MONGODB_URI is not set. Please configure the environment variable.');
       throw new Error('MONGODB_URI missing');
